@@ -34,7 +34,7 @@ pip install fastapi uvicorn httpx
 cd lab10/task1_2
 go run main.go
 Терминал 2 (Python):
-cd lab10/task4
+cd lab10/task2_4
 uvicorn main:app --port 8000
 Проверка:
 Получение статуса: curl http://localhost:8000/fetch-status
@@ -46,6 +46,13 @@ curl -X POST http://localhost:8000/send-data \
      -d '{"test": "hello"}'
 Интерактивная документация:
 Откройте в браузере: http://localhost:8000/docs
+Запуск тестов:
+В первом терминале 
+cd lab10/task1_2
+go run main.go
+Во втором терминале
+cd lab10/task2_4
+pytest
 
 
 3. **Задание 8:** Добавить Swagger-документацию для FastAPI и OpenAPI для Gin.
