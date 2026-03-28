@@ -8,23 +8,46 @@
 
 ### Средняя сложность:
 1. **Задание 2:** Добавить middleware для логирования в Go.
-# Инструкция по запуску (Go)
-# Подготовка зависимостей:
-# cd task1_2
-# go mod tidy
-# Запуск сервера:
-# go run main.go
-# Проверка:
-# Сервер по умолчанию доступен по адресу http://localhost:8080. Проверить эндпоинты можно через браузер или curl:
-# Статус: curl http://localhost:8080/status
-# Инфо: curl http://localhost:8080/info
-# Данные (POST): curl -X POST http://localhost:8080/data
-# Запуск тестов:
-# go test -v
+Инструкция по запуску
+Подготовка зависимостей:
+cd task1_2
+go mod tidy
+Запуск сервера:
+go run main.go
+Проверка:
+Сервер по умолчанию доступен по адресу http://localhost:8080. Проверить эндпоинты можно через браузер или curl:
+Статус: curl http://localhost:8080/status
+Инфо: curl http://localhost:8080/info
+Данные (POST): curl -X POST http://localhost:8080/data
+Запуск тестов:
+go test -v
 
 
 2. **Задание 4:** Создать FastAPI-сервис, который вызывает Go-сервис через HTTP.
-   
+Инструкция по запуску
+Подготовка зависимостей:
+cd task4
+pip install fastapi uvicorn httpx
+Запуск сервера:
+Запустите FastAPI на стандартном порту 8000 (убедитесь, что Go-сервис уже запущен на порту 8080):
+Терминал 1 (Go):
+cd lab10/task1_2
+go run main.go
+Терминал 2 (Python):
+cd lab10/task4
+uvicorn main:app --port 8000
+Проверка:
+Получение статуса: curl http://localhost:8000/fetch-status
+Получение инфо: curl http://localhost:8000/fetch-info
+Отправка данных (POST):
+Bash
+curl -X POST http://localhost:8000/send-data \
+     -H "Content-Type: application/json" \
+     -d '{"test": "hello"}'
+Интерактивная документация:
+Откройте в браузере: http://localhost:8000/docs
+
+
 3. **Задание 8:** Добавить Swagger-документацию для FastAPI и OpenAPI для Gin.
    
 
