@@ -16,7 +16,7 @@ func LoggerMiddleware() gin.HandlerFunc {
 	}
 }
 
-func main() {
+func SetupRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(LoggerMiddleware())
 	r.Use(gin.Recovery())
@@ -33,5 +33,10 @@ func main() {
 		c.JSON(200, gin.H{"message": "data received"})
 	})
 
+	return r
+}
+
+func main() {
+	r := SetupRouter()
 	r.Run(":8080")
 }
