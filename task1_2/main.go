@@ -18,6 +18,7 @@ func LoggerMiddleware() gin.HandlerFunc {
 
 func SetupRouter() *gin.Engine {
 	r := gin.New()
+	r.HandleMethodNotAllowed = true
 	r.Use(LoggerMiddleware())
 	r.Use(gin.Recovery())
 

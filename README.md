@@ -8,17 +8,21 @@
 
 ### Средняя сложность:
 1. **Задание 2:** Добавить middleware для логирования в Go.
-Инструкция по запуску (Go)
-Подготовка зависимостей (выполняется один раз):
-cd task1_2
-go mod tidy
-Запуск сервера:
-go run main.go
-Проверка:
-Сервер по умолчанию доступен по адресу http://localhost:8080. Проверить эндпоинты можно через браузер или curl:
-Статус: curl http://localhost:8080/status
-Инфо: curl http://localhost:8080/info
-Данные (POST): curl -X POST http://localhost:8080/data
+# Инструкция по запуску (Go)
+# Подготовка зависимостей:
+# cd task1_2
+# go mod tidy
+# Запуск сервера:
+# go run main.go
+# Проверка:
+# Сервер по умолчанию доступен по адресу http://localhost:8080. Проверить эндпоинты можно через браузер или curl:
+# Статус: curl http://localhost:8080/status
+# Инфо: curl http://localhost:8080/info
+# Данные (POST): curl -X POST http://localhost:8080/data
+# Запуск тестов:
+# go test -v
+
+
 2. **Задание 4:** Создать FastAPI-сервис, который вызывает Go-сервис через HTTP.
    
 3. **Задание 8:** Добавить Swagger-документацию для FastAPI и OpenAPI для Gin.
