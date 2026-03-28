@@ -1,0 +1,60 @@
+basePath: /
+host: localhost:8080
+info:
+  contact: {}
+  description: Сервер на Gin с поддержкой Swagger (Задание 8).
+  title: Go Gin API
+  version: "1.0"
+paths:
+  /data:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: JSON данные для отправки
+        in: body
+        name: payload
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Отправка данных
+      tags:
+      - Data
+  /info:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Информация о сервисе
+      tags:
+      - System
+  /status:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Проверка статуса
+      tags:
+      - System
+swagger: "2.0"

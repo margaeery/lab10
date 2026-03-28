@@ -56,7 +56,33 @@ pytest
 
 
 3. **Задание 8:** Добавить Swagger-документацию для FastAPI и OpenAPI для Gin.
-   
+Инструкция по запуску (Go / Gin)
+Подготовка зависимостей:
+Перейдите в папку с проектом и обновите модули для поддержки Swagger:
+cd task8
+go install github.com/swaggo/swag/cmd/swag@latest
+swag init
+go mod tidy
+Запуск сервера:
+go run main.go
+Проверка документации:
+Swagger UI: http://localhost:8080/swagger/index.html
+OpenAPI JSON: http://localhost:8080/swagger/doc.json
+Инструкция по запуску (Python / FastAPI)
+Подготовка зависимостей:
+Убедитесь, что установлены необходимые библиотеки (FastAPI генерирует документацию автоматически):
+cd task8
+pip install fastapi uvicorn httpx
+Запуск сервера:
+Запустите шлюз на порту 8000:
+uvicorn main:app --port 8000 --reload
+Проверка документации:
+Swagger UI (основной): http://localhost:8000/docs
+ReDoc (альтернативный): http://localhost:8000/redoc  
+
+
+
+
 
 ### Повышенная сложность:
 1. **Задание 2:** Создать API-шлюз на Go, который маршрутизирует запросы к разным микросервисам (Python, Go).
