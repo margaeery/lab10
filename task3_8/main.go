@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"time"
 
+	_ "go_service/docs"
+
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	_ "go_service/docs"
 )
 
 // @title           Go Gin API
@@ -52,7 +53,7 @@ func InfoHandler(c *gin.Context) {
 // @Success      200      {object}  map[string]string
 // @Router       /data [post]
 func DataHandler(c *gin.Context) {
-    c.JSON(200, gin.H{"message": "data received"})
+	c.JSON(200, gin.H{"message": "data received"})
 }
 
 func SetupRouter() *gin.Engine {

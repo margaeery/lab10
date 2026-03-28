@@ -59,7 +59,7 @@ pytest
 Инструкция по запуску (Go / Gin)
 Подготовка зависимостей:
 Перейдите в папку с проектом и обновите модули для поддержки Swagger:
-cd task8
+cd task3_8
 go install github.com/swaggo/swag/cmd/swag@latest
 swag init
 go mod tidy
@@ -71,7 +71,7 @@ OpenAPI JSON: http://localhost:8080/swagger/doc.json
 Инструкция по запуску (Python / FastAPI)
 Подготовка зависимостей:
 Убедитесь, что установлены необходимые библиотеки (FastAPI генерирует документацию автоматически):
-cd task8
+cd task3_8
 pip install fastapi uvicorn httpx
 Запуск сервера:
 Запустите шлюз на порту 8000:
@@ -79,7 +79,23 @@ uvicorn main:app --port 8000 --reload
 Проверка документации:
 Swagger UI (основной): http://localhost:8000/docs
 ReDoc (альтернативный): http://localhost:8000/redoc  
-
+Запуск тестов:
+Тестирование Go (Gin) Documentation
+cd task3_8
+go get github.com/stretchr/testify/assert
+go mod tidy
+go test -v .
+Тестирование Python (FastAPI) Documentation
+В первом терминале:
+cd task3_8
+go run main.go
+Во втором терминале:
+cd task3_8
+uvicorn main:app --port 8000
+В третьем терминале:
+cd task3_8
+pip install pytest-asyncio
+pytest test_docs.py
 
 
 
