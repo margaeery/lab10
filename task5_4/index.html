@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Go WebSocket Чат</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f4f4f9; margin: 0; padding: 20px; display: flex; flex-direction: column; height: 90vh; }
+        #chat-container { flex: 1; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; }
+        #header { background-color: #007bff; color: white; padding: 15px; text-align: center; font-size: 1.2em; font-weight: bold; }
+        #messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        
+        .message { padding: 10px; border-radius: 8px; max-width: 75%; word-wrap: break-word; background-color: #e9ecef; align-self: flex-start; border: 1px solid #dee2e6; position: relative; }
+        .message.self { background-color: #d4edda; align-self: flex-end; border-color: #c3e6cb; }
+
+        .user-name { font-weight: bold; color: #007bff; margin-bottom: 5px; display: block; border-bottom: 1px solid #ccc; padding-bottom: 2px; font-size: 0.9em; }
+        .message.self .user-name { color: #155724; border-color: #a1d6ac; }
+
+        .message-text { color: #333; line-height: 1.4; }
+        
+        #login-container { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: 15px; }
+        input, button { padding: 12px; border: 1px solid #ddd; border-radius: 4px; font-size: 1em; }
+        input:focus { outline: none; border-color: #007bff; }
+        button { background-color: #007bff; color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #0056b3; }
+        #input-area { display: none; padding: 15px; border-top: 1px solid #eee; background-color: white; gap: 10px; }
+        #msgInput { flex: 1; }
+    </style>
+</head>
+<body>
+
+    <div id="chat-container">
+        <div id="header">WebSocket Чат</div>
+        
+        <div id="login-container">
+            <h3>Введите ваше имя</h3>
+            <input type="text" id="userNameInput" placeholder="Никнейм" autocomplete="off">
+            <button onclick="connect()">Войти</button>
+        </div>
+
+        <div id="messages" style="display: none;"></div>
+
+        <div id="input-area">
+            <input type="text" id="msgInput" placeholder="Сообщение..." autocomplete="off">
+            <button onclick="sendMessage()">Отправить</button>
+        </div>
+    </div>
+
+    <script>
+        let ws;
+        let userName = "";
+
+        const loginContainer = document.getElementById('login-container');
+        const inputArea = document.getElementById('input-area');
+        const messagesDiv = document.getElementById('messages');
+        const msgInput = document.getElementById('msgInput');
+        const userNameInput = document.getElementById('userNameInput');
+
+        userNameInput.addEventListener("keypress", (e) => { if (e.key === "Enter") connect(); });
+        msgInput.addEventListener("keypress", (e) => { if (e.key === "Enter") sendMessage(); });
+
+        function connect() {
+            userName = userNameInput.value.trim();
+            if (!userName) return;
+
+            ws = new WebSocket("ws://localhost:8080/chat");
+
+            ws.onopen = () => {
+                loginContainer.style.display = "none";
+                messagesDiv.style.display = "flex";
+                inputArea.style.display = "flex";
+                msgInput.focus();
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                displayMessage(data);
+            };
+        }
+
+        function sendMessage() {
+            const content = msgInput.value.trim();
+            if (!content || !ws || ws.readyState !== WebSocket.OPEN) return;
+
+            ws.send(JSON.stringify({ user: userName, content: content }));
+            msgInput.value = "";
+            msgInput.focus();
+        }
+
+        function displayMessage(data) {
+            const messageElement = document.createElement("div");
+            messageElement.classList.add("message");
+
+            if (data.user === userName) {
+                messageElement.classList.add("self");
+            }
+
+            const nameElement = document.createElement("span");
+            nameElement.classList.add("user-name");
+            nameElement.textContent = data.user;
+
+            const textElement = document.createElement("div");
+            textElement.classList.add("message-text");
+            textElement.textContent = data.content;
+
+            messageElement.appendChild(nameElement);
+            messageElement.appendChild(textElement);
+            messagesDiv.appendChild(messageElement);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+    </script>
+</body>
+</html>
