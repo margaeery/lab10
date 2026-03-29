@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"sync"
 	"github.com/gorilla/websocket"
@@ -31,8 +32,12 @@ func (h *ChatHub) broadcast(msg []byte) {
 }
 
 func handleConnections(hub *ChatHub, w http.ResponseWriter, r *http.Request) {
-	conn, _ := upgrader.Upgrade(w, r, nil)
-	
+	conn, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Printf("websocket upgrade error: %v", err)
+		return
+	}
+
 	hub.mutex.Lock()
 	hub.clients[conn] = true
 	hub.mutex.Unlock()
@@ -64,5 +69,5 @@ func main() {
 		handleConnections(hub, w, r)
 	})
 	fmt.Println("Чат-сервер запущен на :8080")
-	http.ListenAndServe(":8080", nil)
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }

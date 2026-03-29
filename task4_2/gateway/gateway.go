@@ -9,7 +9,10 @@ import (
 )
 
 func createProxy(target string) *httputil.ReverseProxy {
-	destination, _ := url.Parse(target)
+	destination, err := url.Parse(target)
+	if err != nil {
+		log.Fatalf("invalid proxy target %s: %v", target, err)
+	}
 	proxy := httputil.NewSingleHostReverseProxy(destination)
 	return proxy
 }
@@ -38,5 +41,5 @@ func main() {
 	})
 
 	log.Println("Шлюз запущен на :8000")
-	http.ListenAndServe(":8000", nil)
+	log.Fatal(http.ListenAndServe(":8000", nil))
 }

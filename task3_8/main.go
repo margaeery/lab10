@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"time"
 
 	_ "go_service/docs"
@@ -73,5 +74,5 @@ func SetupRouter() *gin.Engine {
 
 func main() {
 	r := SetupRouter()
-	r.Run(":8080")
+	log.Fatal(r.Run(":8080"))
 }

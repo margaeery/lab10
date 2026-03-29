@@ -30,3 +30,32 @@ async def test_multi_client_broadcast():
         
         assert json.loads(resp1) == msg
         assert json.loads(resp2) == msg
+
+@pytest.mark.asyncio
+async def test_invalid_json():
+    uri = "ws://localhost:8080/chat"
+    async with websockets.connect(uri) as ws:
+        await ws.send("not a json")
+        msg = {"user": "After", "content": "still works"}
+        await ws.send(json.dumps(msg))
+        response = await ws.recv()
+        data = json.loads(response)
+        assert data["user"] == "After"
+
+@pytest.mark.asyncio
+async def test_empty_message():
+    uri = "ws://localhost:8080/chat"
+    async with websockets.connect(uri) as ws:
+        msg = {"user": "Tester", "content": ""}
+        await ws.send(json.dumps(msg))
+        response = await ws.recv()
+        data = json.loads(response)
+        assert data["content"] == ""
+
+@pytest.mark.asyncio
+async def test_connection_close():
+    uri = "ws://localhost:8080/chat"
+    ws = await websockets.connect(uri)
+    await ws.close()
+    with pytest.raises(websockets.exceptions.ConnectionClosedOK):
+        await ws.recv()

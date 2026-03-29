@@ -1,5 +1,6 @@
 import pytest
 import httpx
+from unittest.mock import patch, AsyncMock
 from fastapi.testclient import TestClient
 from main import app
 
@@ -27,6 +28,10 @@ def test_not_found_integration():
     assert response.status_code == 404
 
 def test_go_unavailable_integration():
-    response = client.get("/fetch-status")
-    if response.status_code == 503:
+    with patch("main.httpx.AsyncClient") as mock_client:
+        mock_instance = AsyncMock()
+        mock_instance.request.side_effect = httpx.ConnectError("connection refused")
+        mock_client.return_value.__aenter__.return_value = mock_instance
+        response = client.get("/fetch-status")
+        assert response.status_code == 503
         assert response.json()["detail"] == "Go service unavailable"
