@@ -1,0 +1,71 @@
+basePath: /
+definitions:
+  main.Item:
+    properties:
+      id:
+        example: "1"
+        type: string
+      name:
+        example: Ноутбук
+        type: string
+      price:
+        example: 50000
+        type: number
+    type: object
+host: localhost:8002
+info:
+  contact: {}
+  description: Сервис управления товарами с хранением в памяти
+  title: Go Data Service API
+  version: "1.0"
+paths:
+  /items:
+    get:
+      description: Возвращает массив всех товаров из памяти
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Item'
+            type: array
+      summary: Список товаров
+      tags:
+      - items
+    post:
+      consumes:
+      - application/json
+      description: Добавляет новый товар в список в памяти
+      parameters:
+      - description: Данные товара
+        in: body
+        name: item
+        required: true
+        schema:
+          $ref: '#/definitions/main.Item'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Неверный формат JSON
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "422":
+          description: Ошибка валидации
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Создать товар
+      tags:
+      - items
+swagger: "2.0"
