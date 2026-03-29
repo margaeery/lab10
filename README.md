@@ -137,6 +137,7 @@ pytest test_docs.py
 ```bash
 cd task4_2
 go mod tidy
+pip install fastapi uvicorn pydantic
 ```
 Запуск компонентов
 Для работы системы нужно открыть три терминала и запустить сервисы по отдельности:
@@ -165,10 +166,22 @@ uvicorn analytics:app --port 8001
 Go Service Swagger UI http://localhost:8002/swagger/index.html
 Python ServiceFastAPI Docs http://localhost:8001/docs
 
-
-
-
-
+Запуск тестов:
+Подготовка и запуск сервисов
+Перед запуском тестов необходимо поднять всю инфраструктуру в разных терминалах(см. Инструкцию по запуску)
+Тестирование Go (Проверка Go-сервиса напрямую и через Шлюз):
+В четвертом терминале:
+```bash
+cd task4_2/tests
+go test -v go_service_test.go
+```
+Тестирование Python (Проверка Python-сервиса напрямую и через Шлюз):
+В том же четвертом терминале:
+```bash
+cd task4_2/tests
+pip install pytest requests
+pytest test_python_service.py
+```
 
 
 2. **Задание 4:** Использовать WebSocket: реализовать чат на Go и подключиться к нему из Python.
